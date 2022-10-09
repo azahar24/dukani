@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "603436519278",
+    "project_id": "dukani-67391",
+    "storage_bucket": "dukani-67391.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603436519278:android:d70fd4074bf01f2cf53b7f",
+        "android_client_info": {
+          "package_name": "com.azahar24.dukani"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "603436519278-1cu2ale9nuhstae8chgvl0b11ja9clt4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.azahar24.dukani",
+            "certificate_hash": "b77ad83147091d2ca6b8b935a61b62aad4e78b4f"
+          }
+        },
+        {
+          "client_id": "603436519278-1fnu0hpembt94enu2igi4gnu2knipe7o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWnxFPMMS853d1cSc_ubrbIjLktfrNeTo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "603436519278-1fnu0hpembt94enu2igi4gnu2knipe7o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
