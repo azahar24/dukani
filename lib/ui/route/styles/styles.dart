@@ -7,11 +7,24 @@ class AppStyle {
     fontSize: 20.sp,
   );
 
+  TextStyle myTiteStyle = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontSize: 20.sp,
+    
+  );
+
+  TextStyle mySmallStyle = TextStyle(
+    fontSize: 18.sp,
+    
+  );
+
   InputDecoration textFieldDecoration(hint) => InputDecoration(
     hintText: hint,
     hintStyle: TextStyle(
-      fontSize: 15.sp,
+      fontSize: 17.sp,
     ),
+    border: OutlineInputBorder(
+                  borderSide: BorderSide(width: 1, color: Color(0xFFC5C5C5))),
 
   );
 }

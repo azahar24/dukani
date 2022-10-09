@@ -1,4 +1,5 @@
 import 'package:dukani/const/app_colors.dart';
+import 'package:dukani/ui/route/views/add_new_pakage.dart';
 import 'package:dukani/ui/route/views/nav_page/account.dart';
 import 'package:dukani/ui/route/views/nav_page/all_pakage.dart';
 import 'package:dukani/ui/route/views/nav_page/all_repost.dart';
@@ -16,24 +17,33 @@ class HomePage extends StatelessWidget {
     Account(),
   ];
 
+  addNewPakage(context) {
+    return showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) => AddNewPakage());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        backgroundColor: AppColors.crystalblueColor,
+        onPressed: () =>addNewPakage(context),
         child: Icon(Icons.add),
       ),
       body: _pages[_currentIndex.value],
       bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Colors.black,
+          selectedItemColor: AppColors.crystalblueColor,
         unselectedItemColor: Colors.grey[400],
         backgroundColor: AppColors.crystalblueColor,
           currentIndex: _currentIndex.value,
           onTap: (value) => _currentIndex.value = value,
           items: [
             BottomNavigationBarItem(
-              backgroundColor: AppColors.crystalblueColor,
+             // backgroundColor: AppColors.crystalblueColor,
                 icon: Icon(Icons.sell_rounded), label: "Selling"),
                 BottomNavigationBarItem(
                 icon: Icon(Icons.layers_rounded), label: "All Pakage"),
