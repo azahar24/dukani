@@ -6,7 +6,7 @@ import 'package:get_storage/get_storage.dart';
 
 import 'const/app_strings.dart';
 import 'ui/route/route.dart';
-import 'ui/route/views/auth/widgets/splash_screen.dart';
+import 'ui/views/splash_screen.dart';
 
 
 void main() async {

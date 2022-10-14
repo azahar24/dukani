@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dukani/ui/route/styles/styles.dart';
-import 'package:dukani/ui/route/views/auth/widgets/button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+
+import '../styles/styles.dart';
+import '../widgets/button.dart';
 
 class AddNewPakage extends StatefulWidget {
   @override

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dukani/ui/route/views/auth/widgets/button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +7,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../../../const/app_colors.dart';
-import '../../route.dart';
+import '../../route/route.dart';
+import '../../styles/styles.dart';
+import '../../widgets/button.dart';
 
 class Account extends StatefulWidget {
   @override
@@ -75,6 +76,8 @@ class _AccountState extends State<Account> {
                   ),
                 ),
               ),
+              SizedBox(height: 10.h,),
+              Text('${userData!.displayName}',style: AppStyle().myTextStyle,),
               SizedBox(height: 10.h,),
               FutureBuilder(
                 future: FirebaseFirestore.instance

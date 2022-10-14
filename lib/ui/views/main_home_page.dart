@@ -1,11 +1,15 @@
 import 'package:dukani/const/app_colors.dart';
-import 'package:dukani/ui/route/views/add_new_pakage.dart';
-import 'package:dukani/ui/route/views/nav_page/account.dart';
-import 'package:dukani/ui/route/views/nav_page/all_pakage.dart';
-import 'package:dukani/ui/route/views/nav_page/all_repost.dart';
-import 'package:dukani/ui/route/views/nav_page/selling.dart';
+import 'package:dukani/ui/views/add_new_pakage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'nav_page/account.dart';
+import 'nav_page/all_pakage.dart';
+import 'nav_page/all_repost.dart';
+import 'nav_page/selling.dart';
+
+
 
 class HomePage extends StatelessWidget {
   RxInt _currentIndex = 0.obs;

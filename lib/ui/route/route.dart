@@ -1,10 +1,10 @@
 
 
-import 'package:dukani/ui/route/views/auth/widgets/main_home_page.dart';
-import 'package:dukani/ui/route/views/auth/widgets/sign_in_signup.dart';
 import 'package:get/get.dart';
 
-import 'views/auth/widgets/splash_screen.dart';
+import '../views/auth/sign_in_signup.dart';
+import '../views/main_home_page.dart';
+import '../views/splash_screen.dart';
 
 const String splash = '/splash-screen';
 const String homeScreen = '/home-screen';

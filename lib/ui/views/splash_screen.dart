@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../../../../const/app_strings.dart';
-import '../../../styles/styles.dart';
+import '../styles/styles.dart';
 
 class SplashScreen extends StatefulWidget {
 
