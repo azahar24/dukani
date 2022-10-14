@@ -79,7 +79,10 @@ class _AllPakageState extends State<AllPakage> {
                     });
                   },
                 ),
-              )),
+              ),
+            automaticallyImplyLeading: false,
+
+          ),
           body: StreamBuilder<QuerySnapshot>(
             stream: _usersStream,
             builder: (context, snapshots) {
@@ -202,27 +205,100 @@ class _AllPakageState extends State<AllPakage> {
                         .startsWith(name.toLowerCase())) {
                       return Card(
                         child: Container(
-                          height: 100.h,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          padding: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
+                          height: 120.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                data['title'],
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    data['title'],
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Colors.black54,
+                                        fontSize: 22.sp,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 10.h,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Buy',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 20.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(width: 5.w,),
+                                      Text(
+                                        '=',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 20.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(width: 5.w,),
+                                      Text(
+                                        data['buyrate'].toString(),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 20.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10.h,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Item',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 20.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(width: 5.w,),
+                                      Text(
+                                        '=',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 20.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(width: 5.w,),
+                                      Text(
+                                        data['item2'].toString(),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 20.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                              Text(
-                                data['buyrate'].toString(),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
+                              Column(
+                                children: [
+                                  IconButton(onPressed: (){}, icon: Icon(Icons.edit,size: 25.h,),),
+                                  IconButton(onPressed: ()=>_delateDialog(context, snapshots.data!.docs[index].id), icon: Icon(Icons.delete,size: 25.h,),),
+                                ],
                               )
                             ],
                           ),

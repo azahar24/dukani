@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../const/app_colors.dart';
-import '../../styles/styles.dart';
 
 class AllRepost extends StatelessWidget {
   final Stream<QuerySnapshot<Map<String, dynamic>>> _usersStream =
@@ -36,24 +35,47 @@ class AllRepost extends StatelessWidget {
                   Map<String, dynamic> data =
                       document.data()! as Map<String, dynamic>;
                   return Container(
-                    height: 75.h,
+                    color: Colors.white,
+                    padding: EdgeInsets.only(top: 10.h, left: 15.w, right: 15.w, bottom: 10.h),
+                    height: 100.h,
                     child: Card(
+                      elevation: 1,
+
                       child: Column(
                         children: [
-                          Text(
-                            data['title'],
-                            style: AppStyle().myTiteStyle,
+                          Row(
+                            children: [
+                              Text(
+                                data['title'],
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
                           Row(
                             children: [
                               Text(
                                 'Totall Sell : ${data['totallsell']}',
-                                style: AppStyle().mySmallStyle,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 20.sp,
+                                    ),
                               ),
                               SizedBox(width: 20.w,),
                               Text(
                             'Totall Ernig : ${data['totallernig']}',
-                            style: AppStyle().mySmallStyle,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 20.sp,
+                                ),
                           ),
                             ],
                           ),

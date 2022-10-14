@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dukani/ui/route/styles/styles.dart';
 import 'package:dukani/ui/route/views/auth/widgets/button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +6,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
-import '../../../../const/app_colors.dart';
+import '../../styles/styles.dart';
 
-class Selling extends StatelessWidget {
+class Selling extends StatefulWidget {
+  @override
+  State<Selling> createState() => _SellingState();
+}
+
+class _SellingState extends State<Selling> {
   TextEditingController _tolallController = TextEditingController();
   TextEditingController _sellController = TextEditingController();
+
+  String name = "";
 
   final Stream<QuerySnapshot<Map<String, dynamic>>> _usersStream =
       FirebaseFirestore.instance
@@ -22,150 +28,446 @@ class Selling extends StatelessWidget {
 
   User? userData = FirebaseAuth.instance.currentUser;
 
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.scaffoldColor,
-      body: StreamBuilder<QuerySnapshot>(
-          stream: _usersStream,
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return Center(child: Text('Something went wrong'));
-            }
+    return SafeArea(
+      child: Scaffold(
+          appBar: AppBar(
+            title: Card(
+              child: TextField(
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search), hintText: 'Search...'),
+                onChanged: (val) {
+                  setState(() {
+                    name = val;
+                  });
+                },
+              ),
+            ),
+            automaticallyImplyLeading: false,
+          ),
+          body: StreamBuilder<QuerySnapshot>(
+            stream: _usersStream,
+            builder: (context, snapshots) {
+              return (snapshots.connectionState == ConnectionState.waiting)
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView.builder(
+                      itemCount: snapshots.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        var data = snapshots.data!.docs[index].data()
+                            as Map<String, dynamic>;
 
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
+                        if (name.isEmpty) {
+                          return Card(
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  top: 5.h, left: 10.w, right: 10.w),
+                              height: 120.h,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        data['title'],
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 22.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Buy Rate',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          Text(
+                                            '=',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          Text(
+                                            data['peritem'].toString(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Stoke',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          Text(
+                                            '=',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          Text(
+                                            data['item'].toString(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: 60.h,
+                                        width: 100.w,
+                                        child: Button('Sell', () {
+                                          Get.defaultDialog(
+                                            title: 'Sell',
+                                            content: Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        width: 170.w,
+                                                        child: TextFormField(
+                                                          controller: _sellController,
+                                                          keyboardType: TextInputType.number,
+                                                          decoration: AppStyle()
+                                                              .textFieldDecoration(
+                                                              "enter price"),
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 15.w,),
+                                                      Container(
+                                                        width: 80.w,
+                                                        child: TextFormField(
+                                                          controller: _tolallController,
+                                                          keyboardType: TextInputType.number,
+                                                          decoration: AppStyle()
+                                                              .textFieldDecoration(
+                                                              "item"),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 20.h,),
+                                                  Button('Sell', (){
+                                                    int item = data['item'];
+                                                    int totalCon = int.parse(_tolallController.text);
 
-            return ListView(
-              children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data =
-                    document.data()! as Map<String, dynamic>;
-                return Container(
-                  padding: EdgeInsets.only(
-                      top: 5.h, bottom: 5.h, left: 15.w, right: 15.w),
-                  height: 180.h,
-                  child: Card(
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  data['title'],
-                                  style: AppStyle().myTiteStyle,
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Text(
-                                  'Buy Rate : ${data['peritem'].toString()}',
-                                  style: AppStyle().mySmallStyle,
-                                ),
-                                SizedBox(
-                                  height: 6.h,
-                                ),
-                                Text(
-                                  'Item Stoke :${data['item'].toString()}',
-                                  style: AppStyle().mySmallStyle,
-                                ),
-                              ],
+                                                    int nu = item - totalCon;
+
+                                                    double buyRat = data['peritem'];
+                                                    int sellRat = int.parse(_sellController.text);
+                                                    double earnig = sellRat - buyRat;
+                                                    double pisernig = data['totallernig'];
+
+                                                    double totalernig = pisernig + earnig;
+                                                    double er = totalernig * totalCon;
+
+                                                    int pisSell = data['totallsell'];
+                                                    int totalSell = pisSell + totalCon;
+
+                                                    FirebaseFirestore.instance
+                                                        .collection('pakage')
+                                                        .doc(userData!.email)
+                                                        .collection('product')
+                                                        .doc(snapshots.data!.docs[index].id)
+                                                        .update({
+                                                      'item': nu,
+                                                      'totallernig': er,
+                                                      'totallsell': totalSell,
+                                                    }).whenComplete(() {
+                                                      Fluttertoast.showToast(msg: "update sec");
+                                                    }).catchError((error) => printError());
+                                                    print('Secces add');
+
+                                                    print(nu);
+                                                    Get.back();
+                                                    _sellController.clear();
+                                                    _tolallController.clear();
+
+                                                  })
+
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text('pis'),
-                                    SizedBox(
-                                      width: 6.w,
-                                    ),
-                                    Container(
-                                      width: 80.w,
-                                      height: 50.h,
-                                      child: TextFormField(
-                                        controller: _tolallController,
-                                        keyboardType: TextInputType.number,
-                                        decoration: AppStyle()
-                                            .textFieldDecoration(
-                                                "enter number"),
+                          );
+                        }
+                        if (data['title']
+                            .toString()
+                            .toLowerCase()
+                            .startsWith(name.toLowerCase())) {
+                          return Card(
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  top: 5.h, left: 10.w, right: 10.w),
+                              height: 120.h,
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        data['title'],
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 22.sp,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text('Sell per item'),
-                                    SizedBox(
-                                      width: 6.w,
-                                    ),
-                                    Container(
-                                      width: 80.w,
-                                      height: 50.h,
-                                      child: TextFormField(
-                                        controller: _sellController,
-                                        keyboardType: TextInputType.number,
-                                        decoration: AppStyle()
-                                            .textFieldDecoration(
-                                                "enter number"),
+                                      SizedBox(
+                                        height: 10.h,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Button('Submit', () {
-                          //data['item'] - _tolallController.text;
-                          //var a = data['item'] - _tolallController.text;
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Buy Rate',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          Text(
+                                            '=',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          Text(
+                                            data['peritem'].toString(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Stoke',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          Text(
+                                            '=',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          Text(
+                                            data['item'].toString(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: 60.h,
+                                        width: 100.w,
+                                        child: Button('Sell', () {
+                                          Get.defaultDialog(
+                                            title: 'Sell',
+                                            content: Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        width: 170.w,
+                                                        child: TextFormField(
+                                                          controller: _sellController,
+                                                          keyboardType: TextInputType.number,
+                                                          decoration: AppStyle()
+                                                              .textFieldDecoration(
+                                                              "enter price"),
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 15.w,),
+                                                      Container(
+                                                        width: 80.w,
+                                                        child: TextFormField(
+                                                          controller: _tolallController,
+                                                          keyboardType: TextInputType.number,
+                                                          decoration: AppStyle()
+                                                              .textFieldDecoration(
+                                                              "item"),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 20.h,),
+                                                  Button('Sell', (){
+                                                    int item = data['item'];
+                                                    int totalCon = int.parse(_tolallController.text);
 
-                          //int item = data['item'];
-                          int item = data['item'];
-                          int totalCon = int.parse(_tolallController.text);
+                                                    int nu = item - totalCon;
 
-                          int nu = item - totalCon;
+                                                    double buyRat = data['peritem'];
+                                                    int sellRat = int.parse(_sellController.text);
+                                                    double earnig = sellRat - buyRat;
+                                                    double pisernig = data['totallernig'];
 
-                          double buyRat = data['peritem'];
-                          int sellRat = int.parse(_sellController.text);
-                          double earnig = sellRat - buyRat;
-                          double pisernig = data['totallernig'];
+                                                    double totalernig = pisernig + earnig;
+                                                    double er = totalernig * totalCon;
 
-                          double totalernig = pisernig + earnig;
+                                                    int pisSell = data['totallsell'];
+                                                    int totalSell = pisSell + totalCon;
 
-                          int pisSell = data['totallsell'];
-                          int totalSell = pisSell + totalCon;
+                                                    FirebaseFirestore.instance
+                                                        .collection('pakage')
+                                                        .doc(userData!.email)
+                                                        .collection('product')
+                                                        .doc(snapshots.data!.docs[index].id)
+                                                        .update({
+                                                      'item': nu,
+                                                      'totallernig': er,
+                                                      'totallsell': totalSell,
+                                                    }).whenComplete(() {
+                                                      Fluttertoast.showToast(msg: "update sec");
+                                                    }).catchError((error) => printError());
+                                                    print('Secces add');
 
-                          FirebaseFirestore.instance
-                              .collection('pakage')
-                              .doc(userData!.email)
-                              .collection('product')
-                              .doc(document.id)
-                              .update({
-                            'item': nu,
-                            'totallernig': totalernig,
-                            'totallsell': totalSell,
-                          }).whenComplete(() {
-                            Fluttertoast.showToast(msg: "update sec");
-                          }).catchError((error) => printError());
-                          print('Secces add');
+                                                    print(nu);
+                                                    Get.back();
+                                                    _sellController.clear();
+                                                    _tolallController.clear();
 
-                          print(nu);
-                        })
-                      ],
-                    ),
-                  ),
-                );
-              }).toList(),
-            );
-          }),
+                                                  })
+
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                        return Container();
+                      });
+            },
+          )),
     );
   }
 }
