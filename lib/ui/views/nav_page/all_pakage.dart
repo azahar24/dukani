@@ -310,7 +310,7 @@ class _AllPakageState extends State<AllPakage> {
                               ),
                               Column(
                                 children: [
-                                  IconButton(onPressed: (){}, icon: Icon(Icons.edit,size: 25.h,),),
+                                  IconButton(onPressed: ()=>editPakage(data,snapshots.data!.docs[index].id), icon: Icon(Icons.edit,size: 25.h,),),
                                   IconButton(onPressed: ()=>_delateDialog(context, snapshots.data!.docs[index].id), icon: Icon(Icons.delete,size: 25.h,),),
                                 ],
                               )

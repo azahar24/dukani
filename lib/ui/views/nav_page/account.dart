@@ -33,7 +33,7 @@ class _AccountState extends State<Account> {
                 onPressed: () async {
                   await FirebaseAuth.instance.signOut().then(
                         (value) => Fluttertoast.showToast(
-                        msg: "Logout Successfull"),
+                        msg: "Logout Successful"),
                   );
                   await box.remove('uid');
                   Get.toNamed(loginScreen);
