@@ -59,7 +59,7 @@ class AllRepost extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                'Totall Sell : ${data['totallsell']}',
+                                'Total Sell : ${data['totallsell']}',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -69,7 +69,7 @@ class AllRepost extends StatelessWidget {
                               ),
                               SizedBox(width: 20.w,),
                               Text(
-                            'Totall Ernig : ${data['totallernig']}',
+                            'Total Earning : ${data['totallernig']}',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(

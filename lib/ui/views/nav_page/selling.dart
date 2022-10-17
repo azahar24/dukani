@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
+import '../../../business_logics/validator_textfield.dart';
 import '../../styles/styles.dart';
 import '../../widgets/button.dart';
 
@@ -17,6 +18,8 @@ class _SellingState extends State<Selling> {
   TextEditingController _tolallController = TextEditingController();
   TextEditingController _sellController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   String name = "";
 
   final Stream<QuerySnapshot<Map<String, dynamic>>> _usersStream =
@@ -27,12 +30,6 @@ class _SellingState extends State<Selling> {
           .snapshots();
 
   User? userData = FirebaseAuth.instance.currentUser;
-
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -186,70 +183,105 @@ class _SellingState extends State<Selling> {
                                               padding: EdgeInsets.all(8.0),
                                               child: Column(
                                                 children: [
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                        width: 170.w,
-                                                        child: TextFormField(
-                                                          controller: _sellController,
-                                                          keyboardType: TextInputType.number,
-                                                          decoration: AppStyle()
-                                                              .textFieldDecoration(
-                                                              "enter price"),
+                                                  Form(
+                                                    key: _formKey,
+                                                    autovalidateMode:
+                                                        AutovalidateMode.always,
+                                                    child: Row(
+                                                      children: [
+                                                        Container(
+                                                          width: 170.w,
+                                                          child: TextFormField(
+                                                            controller:
+                                                                _sellController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            validator: (val) =>
+                                                                ValidatorTextField()
+                                                                    .empty(val),
+                                                            decoration: AppStyle()
+                                                                .textFieldDecoration(
+                                                                    "enter price"),
+                                                          ),
                                                         ),
-                                                      ),
-                                                      SizedBox(width: 15.w,),
-                                                      Container(
-                                                        width: 80.w,
-                                                        child: TextFormField(
-                                                          controller: _tolallController,
-                                                          keyboardType: TextInputType.number,
-                                                          decoration: AppStyle()
-                                                              .textFieldDecoration(
-                                                              "item"),
+                                                        SizedBox(
+                                                          width: 15.w,
                                                         ),
-                                                      ),
-                                                    ],
+                                                        Container(
+                                                          width: 80.w,
+                                                          child: TextFormField(
+                                                            validator: (val) =>
+                                                                ValidatorTextField()
+                                                                    .empty(val),
+                                                            controller:
+                                                                _tolallController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            decoration: AppStyle()
+                                                                .textFieldDecoration(
+                                                                    "item"),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                  SizedBox(height: 20.h,),
-                                                  Button('Sell', (){
-                                                    int item = data['item'];
-                                                    int totalCon = int.parse(_tolallController.text);
+                                                  SizedBox(
+                                                    height: 20.h,
+                                                  ),
+                                                  Button('Sell', () {
+                                                    if (_formKey.currentState!
+                                                        .validate()) {
+                                                      int item = data['item'];
+                                                      int totalCon = int.parse(
+                                                          _tolallController
+                                                              .text);
 
-                                                    int nu = item - totalCon;
+                                                      int nu = item - totalCon;
 
-                                                    double buyRat = data['peritem'];
-                                                    int sellRat = int.parse(_sellController.text);
-                                                    double earnig = sellRat - buyRat;
-                                                    double pisernig = data['totallernig'];
+                                                      double buyRat =
+                                                          data['peritem'];
+                                                      int sellRat = int.parse(
+                                                          _sellController.text);
+                                                      double earnig =
+                                                          sellRat - buyRat;
+                                                      double pisernig =
+                                                          data['totallernig'];
 
-                                                    double totalernig = pisernig + earnig;
-                                                    double er = totalernig * totalCon;
+                                                      double totalernig =
+                                                          pisernig + earnig;
+                                                      double er =
+                                                          totalernig * totalCon;
 
-                                                    int pisSell = data['totallsell'];
-                                                    int totalSell = pisSell + totalCon;
+                                                      int pisSell =
+                                                          data['totallsell'];
+                                                      int totalSell =
+                                                          pisSell + totalCon;
 
-                                                    FirebaseFirestore.instance
-                                                        .collection('pakage')
-                                                        .doc(userData!.email)
-                                                        .collection('product')
-                                                        .doc(snapshots.data!.docs[index].id)
-                                                        .update({
-                                                      'item': nu,
-                                                      'totallernig': er,
-                                                      'totallsell': totalSell,
-                                                    }).whenComplete(() {
-                                                      Fluttertoast.showToast(msg: "update sec");
-                                                    }).catchError((error) => printError());
-                                                    print('Secces add');
+                                                      FirebaseFirestore.instance
+                                                          .collection('pakage')
+                                                          .doc(userData!.email)
+                                                          .collection('product')
+                                                          .doc(snapshots.data!
+                                                              .docs[index].id)
+                                                          .update({
+                                                        'item': nu,
+                                                        'totallernig': er,
+                                                        'totallsell': totalSell,
+                                                      }).whenComplete(() {
+                                                        Fluttertoast.showToast(
+                                                            msg: "update sec");
+                                                      }).catchError((error) =>
+                                                              printError());
+                                                      print('Secces add');
 
-                                                    print(nu);
-                                                    Get.back();
-                                                    _sellController.clear();
-                                                    _tolallController.clear();
-
+                                                      print(nu);
+                                                      Get.back();
+                                                      _sellController.clear();
+                                                      _tolallController.clear();
+                                                    }
                                                   })
-
                                                 ],
                                               ),
                                             ),
@@ -387,70 +419,105 @@ class _SellingState extends State<Selling> {
                                               padding: EdgeInsets.all(8.0),
                                               child: Column(
                                                 children: [
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                        width: 170.w,
-                                                        child: TextFormField(
-                                                          controller: _sellController,
-                                                          keyboardType: TextInputType.number,
-                                                          decoration: AppStyle()
-                                                              .textFieldDecoration(
-                                                              "enter price"),
+                                                  Form(
+                                                    key: _formKey,
+                                                    autovalidateMode:
+                                                    AutovalidateMode.always,
+                                                    child: Row(
+                                                      children: [
+                                                        Container(
+                                                          width: 170.w,
+                                                          child: TextFormField(
+                                                            controller:
+                                                            _sellController,
+                                                            keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                            validator: (val) =>
+                                                                ValidatorTextField()
+                                                                    .empty(val),
+                                                            decoration: AppStyle()
+                                                                .textFieldDecoration(
+                                                                "enter price"),
+                                                          ),
                                                         ),
-                                                      ),
-                                                      SizedBox(width: 15.w,),
-                                                      Container(
-                                                        width: 80.w,
-                                                        child: TextFormField(
-                                                          controller: _tolallController,
-                                                          keyboardType: TextInputType.number,
-                                                          decoration: AppStyle()
-                                                              .textFieldDecoration(
-                                                              "item"),
+                                                        SizedBox(
+                                                          width: 15.w,
                                                         ),
-                                                      ),
-                                                    ],
+                                                        Container(
+                                                          width: 80.w,
+                                                          child: TextFormField(
+                                                            validator: (val) =>
+                                                                ValidatorTextField()
+                                                                    .empty(val),
+                                                            controller:
+                                                            _tolallController,
+                                                            keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                            decoration: AppStyle()
+                                                                .textFieldDecoration(
+                                                                "item"),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                  SizedBox(height: 20.h,),
-                                                  Button('Sell', (){
-                                                    int item = data['item'];
-                                                    int totalCon = int.parse(_tolallController.text);
+                                                  SizedBox(
+                                                    height: 20.h,
+                                                  ),
+                                                  Button('Sell', () {
+                                                    if (_formKey.currentState!
+                                                        .validate()) {
+                                                      int item = data['item'];
+                                                      int totalCon = int.parse(
+                                                          _tolallController
+                                                              .text);
 
-                                                    int nu = item - totalCon;
+                                                      int nu = item - totalCon;
 
-                                                    double buyRat = data['peritem'];
-                                                    int sellRat = int.parse(_sellController.text);
-                                                    double earnig = sellRat - buyRat;
-                                                    double pisernig = data['totallernig'];
+                                                      double buyRat =
+                                                      data['peritem'];
+                                                      int sellRat = int.parse(
+                                                          _sellController.text);
+                                                      double earnig =
+                                                          sellRat - buyRat;
+                                                      double pisernig =
+                                                      data['totallernig'];
 
-                                                    double totalernig = pisernig + earnig;
-                                                    double er = totalernig * totalCon;
+                                                      double totalernig =
+                                                          pisernig + earnig;
+                                                      double er =
+                                                          totalernig * totalCon;
 
-                                                    int pisSell = data['totallsell'];
-                                                    int totalSell = pisSell + totalCon;
+                                                      int pisSell =
+                                                      data['totallsell'];
+                                                      int totalSell =
+                                                          pisSell + totalCon;
 
-                                                    FirebaseFirestore.instance
-                                                        .collection('pakage')
-                                                        .doc(userData!.email)
-                                                        .collection('product')
-                                                        .doc(snapshots.data!.docs[index].id)
-                                                        .update({
-                                                      'item': nu,
-                                                      'totallernig': er,
-                                                      'totallsell': totalSell,
-                                                    }).whenComplete(() {
-                                                      Fluttertoast.showToast(msg: "update sec");
-                                                    }).catchError((error) => printError());
-                                                    print('Secces add');
+                                                      FirebaseFirestore.instance
+                                                          .collection('pakage')
+                                                          .doc(userData!.email)
+                                                          .collection('product')
+                                                          .doc(snapshots.data!
+                                                          .docs[index].id)
+                                                          .update({
+                                                        'item': nu,
+                                                        'totallernig': er,
+                                                        'totallsell': totalSell,
+                                                      }).whenComplete(() {
+                                                        Fluttertoast.showToast(
+                                                            msg: "update sec");
+                                                      }).catchError((error) =>
+                                                          printError());
+                                                      print('Secces add');
 
-                                                    print(nu);
-                                                    Get.back();
-                                                    _sellController.clear();
-                                                    _tolallController.clear();
-
+                                                      print(nu);
+                                                      Get.back();
+                                                      _sellController.clear();
+                                                      _tolallController.clear();
+                                                    }
                                                   })
-
                                                 ],
                                               ),
                                             ),

@@ -7,6 +7,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 
+import '../edit_pakage.dart';
+
+
 
 class AllPakage extends StatefulWidget {
 
@@ -15,6 +18,10 @@ class AllPakage extends StatefulWidget {
 }
 
 class _AllPakageState extends State<AllPakage> {
+
+
+
+
   String name = "";
 
   final Stream<QuerySnapshot<Map<String, dynamic>>> _usersStream =
@@ -61,6 +68,13 @@ class _AllPakageState extends State<AllPakage> {
             ),
           );
         });
+  }
+
+  editPakage(data, String id){
+    Get.defaultDialog(
+      title: 'Sell',
+      content: EditPakage(data: data, currentid: id),
+    );
   }
 
   @override
@@ -190,7 +204,7 @@ class _AllPakageState extends State<AllPakage> {
                               ),
                               Column(
                                 children: [
-                                  IconButton(onPressed: (){}, icon: Icon(Icons.edit,size: 25.h,),),
+                                  IconButton(onPressed: ()=>editPakage(data,snapshots.data!.docs[index].id), icon: Icon(Icons.edit,size: 25.h,),),
                                   IconButton(onPressed: ()=>_delateDialog(context, snapshots.data!.docs[index].id), icon: Icon(Icons.delete,size: 25.h,),),
                                 ],
                               )

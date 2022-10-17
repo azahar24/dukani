@@ -28,11 +28,11 @@ class Auth {
     User? user = _userCredential.user;
 
     if (user!.uid.isNotEmpty) {
-      Fluttertoast.showToast(msg: 'registration Successfull');
+      Fluttertoast.showToast(msg: 'registration Successful');
       box.write('uid', user.uid);
       Get.toNamed(homeScreen);
     } else {
-      Fluttertoast.showToast(msg: 'somting rong');
+      Fluttertoast.showToast(msg: 'something Wrong');
     }
   }
 }
